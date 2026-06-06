@@ -1,7 +1,7 @@
 // api-biblioteca.spec.js
 // @js-check
 import { test, expect } from '@playwright/test';
-const { BibliotecaApiController } = require('./controllers/BibliotecaApiController.js');
+const { BibliotecaApiController } = require('../controllers/BibliotecaApiController.js');
 
 // Helper para gerar emails dinâmicos e evitar falsos negativos por dados duplicados
 const gerarEmailAleatorio = () => `user${Date.now()}@teste.com`; 

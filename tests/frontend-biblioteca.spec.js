@@ -5,14 +5,14 @@
 const { test, expect } = require('@playwright/test');
 
 // Importação das Classes de Page Object Model (POM) para cada página do sistema,
-const { LoginPage } = require('./pages/LoginPage.js');
-const { RegistroPage } = require('./pages/RegistroPage.js');
-const { DashboardPage } = require('./pages/DashboardPage.js');
-const { LivrosPage } = require('./pages/LivrosPage.js');
-const { DetalhesPage } = require('./pages/DetalhesPage.js');
-const { FavoritosPage } = require('./pages/FavoritosPage.js');
-const { ArrendamentosPage } = require('./pages/ArrendamentosPage.js');
-const { AdminUsuariosPage } = require('./pages/AdminUsuariosPage.js');
+const { LoginPage } = require('../pages/LoginPage.js');
+const { RegistroPage } = require('../pages/RegistroPage.js');
+const { DashboardPage } = require('../pages/DashboardPage.js');
+const { LivrosPage } = require('../pages/LivrosPage.js');
+const { DetalhesPage } = require('../pages/DetalhesPage.js');
+const { FavoritosPage } = require('../pages/FavoritosPage.js');
+const { ArrendamentosPage } = require('../pages/ArrendamentosPage.js');
+const { AdminUsuariosPage } = require('../pages/AdminUsuariosPage.js');
 
 test.describe('Suíte de Testes Frontend (UI) - Sistema de Biblioteca (Padrão POM)', () => {
 
