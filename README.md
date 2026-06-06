@@ -17,7 +17,7 @@ O projeto está estruturado com duas suítes principais de testes em Playwright:
 ## ⚙️ Inicialização Automática do Servidor
 
 O ambiente está totalmente configurado para **Integração Contínua (CI)** e execuções locais simplificadas:
-* **Execução Local:** O ficheiro `playwright.config.js` utiliza o recurso `webServer` do Playwright. Isto significa que **o servidor/API inicia de forma 100% automática** assim que geras qualquer comando de teste. Não precisas de abrir um terminal à parte para ligar a aplicação.
+* **Execução Local:** O ficheiro `playwright.config.js` utiliza o recurso `webServer` do Playwright. Isto significa que **o servidor/API inicia de forma 100% automática** assim que se gera qualquer comando de teste. Não sendo necessário de abrir um terminal à parte para ligar a aplicação.
 * **Pipeline de CI:** No ecossistema do GitHub Actions, o ficheiro de workflow `playwright.yml` encarrega-se de provisionar as dependências e levantar o servidor antes de correr as suítes de validação em cada *Pull Request* ou *Push*.
 
 ---
@@ -30,7 +30,7 @@ Antes de executar os testes, garante que tens as seguintes ferramentas instalada
 * **Gestor de pacotes NPM** (Instalado automaticamente com o Node.js)
 * **Editor de Código / IDE:** [Visual Studio Code (VS Code)](https://code.visualstudio.com/) - *Recomendado*
 * **Extensão do VS Code:** *Playwright Test for VSCode* (Opcional, útil para execução visual)
-* **Github: ** Para clonar o repositório.
+* **Github:** Para clonar o repositório.
 
 ---
 
@@ -39,44 +39,43 @@ Antes de executar os testes, garante que tens as seguintes ferramentas instalada
   Siga os passos abaixo para preparar o ambiente local:
 
   1. **Clonar o repositório:**
-    bash
-    git clone https://github.com/beans79/CRE-Project-POM.git
-    cd CRE-Project-POM
+    - bash
+    - git clone https://github.com/beans79/CRE-Project-POM.git
+    - cd CRE-Project-POM
 
   2. Instalar as dependências do projeto:
     Este comando instalará o ecossistema do Playwright e outras bibliotecas necessárias declaradas no package.json.
-      bash
-      npm install
+      - bash
+      - npm install
 
   3. Instalar os Browsers do Playwright:
     O Playwright precisa fazer download dos binários limpos dos navegadores (Chromium, Firefox, WebKit) para correr os testes de UI.~
-      bash
-      npx playwright install
+      - bash
+      - npx playwright install
 
 🧪 Como Executar os Testes
     No inicio da execução dos testes no playwright, irá instanciar o servidor, aguardar que ele fique disponível, correr os testes e fechá-lo de seguida.
   1. Executar Todos os Testes (UI e API)
     Corre todas as suítes de teste em modo headless (em segundo plano):
-      bash
-      npx playwright test
+      - bash:
+      - npx playwright test
   2. Executar Apenas os Testes de Interface (Frontend)
     Para focar apenas na validação visual e fluxos E2E da UI:
-
-      Bash
-      npx playwright test frontend-biblioteca.spec.js
+      - bash:
+      - npx playwright test frontend-biblioteca.spec.js
   3. Executar Apenas os Testes de API
     Para focar apenas na validação dos endpoints e regras de negócio de back-end:
-      bash
-      npx playwright test  .\tests\api-biblioteca.spec.js  
+      - bash:
+      - npx playwright test  .\tests\api-biblioteca.spec.js  
   4. Executar em Modo Gráfico (UI Mode)
     Recomendado para desenvolvimento e depuração. Abre uma interface interativa que permite ver o passo a passo, logs e efetuar time-travel nos testes de interface:
-      bash
-      npx playwright test --ui .\\tests\\biblioteca-pom\\frontend-biblioteca.spec.js 
+      - bash:
+      - npx playwright test --ui .\\tests\\biblioteca-pom\\frontend-biblioteca.spec.js 
   5. Executar um teste especifico
     Permite a execução de um teste especifico. 
     Ex: (CT-FE-001 - Fluxo Completo de Registro (Aluno))
-      bash
-      npx playwright test -g 'CT-FE-001 - Fluxo Completo de Registro (Aluno)'
+      - bash:
+      - npx playwright test -g 'CT-FE-001 - Fluxo Completo de Registro (Aluno)'
   6. Acessos principais:
     - Aplicação (login): `http://localhost:3000/login.html`  
     - Swagger: `http://localhost:3000/api-docs`  
@@ -84,8 +83,8 @@ Antes de executar os testes, garante que tens as seguintes ferramentas instalada
 
 📊 Relatórios de Testes (Reports)
   Após a conclusão de qualquer execução, o Playwright gera automaticamente um relatório HTML detalhado. Para abrir o último relatório gerado e inspecionar falhas ou métricas, executa:
-    bash
-    npx playwright show-report
+    - bash
+    - npx playwright show-report
 
 ***
 
