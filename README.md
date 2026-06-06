@@ -1,145 +1,125 @@
-# 📚 Sistema de Biblioteca – Versão Avançada para Testes
+# 📚 Sistema de Biblioteca - Suíte de Testes Automatizados (Playwright)
 
-Sistema completo de gerenciamento de biblioteca com autenticação, dashboard, favoritos, arrendamentos, compras e painel administrativo de usuários. Ideal para praticar testes de API (backend) e interface (frontend) com Node.js, Express e JavaScript puro.
+  Este repositório contém a infraestrutura de testes automatizados para o **Sistema de Biblioteca**. A suíte abrange tanto testes de interface gráfica (**End-to-End/UI**) utilizando o padrão *Page Object Model (POM)*, quanto testes de integração e validação de contratos da camada de serviços (**API**).
 
-***
+---
 
-## 🎯 Sobre o Projeto
+## 📋 Conteúdo do Repositório
 
-Ambiente de aprendizado focado em **automação de testes** de API e UI.  
-Inclui fluxos reais de uso: cadastro/login, CRUD de livros, favoritos, empréstimos (arrendamentos), compras de livros e gestão de usuários por administradores.
+O projeto está estruturado com duas suítes principais de testes em Playwright:
 
-***
+1. **`frontend-biblioteca.spec.js` (Testes de UI):** Foco em fluxos de utilizador de ponta a ponta. Implementa 24 Casos de Teste (`CT-FE-001` a `CT-FE-024`) organizados em módulos como Registro, Login, Proteção de Rotas, Dashboard dinâmico por perfil, Catálogo de Livros, Favoritos, Arrendamentos, Compras e Backoffice de Usuários.
 
-## ✨ Funcionalidades
+2. **`api-biblioteca.spec.js` (Testes de API):** Validação direta dos endpoints REST da aplicação. Implementa 32 Casos de Teste (`CT-API-001` a `CT-API-032`) cobrindo asserções de códigos de estado HTTP, tempo de resposta, payloads JSON, regras de negócio (como validação matemática de totais e integridade de stock) e restrições de privilégios.
 
-### 🔐 Autenticação e Perfis
-- **Registro público:** Criação de conta sempre como **Aluno**.
-- **Login:** Autenticação por email e senha.
-- **Perfis de usuário:**  
-  - Aluno (tipo 1)  
-  - Funcionário (tipo 2)  
-  - Administrador (tipo 3)
-- **Admin de Usuários:** Tela exclusiva onde o admin cria/edita/exclui funcionários e outros admins (CRUD completo).
+---
 
-### 📖 Gerenciamento de Livros
-- **Criar Livro:** Nome, autor, páginas, descrição, imagem, estoque e preço.
-- **Listar Livros:** Grid responsivo com capa e informações principais.
-- **Detalhes:** Página dedicada para visualização de um livro.
-- **Atualizar / Deletar:** Operações completas de edição e remoção.
+## ⚙️ Inicialização Automática do Servidor
 
-### 📅 Arrendamentos (Empréstimos)
-- **Aluno:**  
-  - Solicitar arrendamento escolhendo o livro por nome.  
-  - Ver lista de “Meus Arrendamentos”.
-- **Funcionário/Admin:**  
-  - Tela de **Aprovação de Arrendamentos** para listar todos.  
-  - Aprovar / Rejeitar pedidos, com atualização de estoque.
+O ambiente está totalmente configurado para **Integração Contínua (CI)** e execuções locais simplificadas:
+* **Execução Local:** O ficheiro `playwright.config.js` utiliza o recurso `webServer` do Playwright. Isto significa que **o servidor/API inicia de forma 100% automática** assim que geras qualquer comando de teste. Não precisas de abrir um terminal à parte para ligar a aplicação.
+* **Pipeline de CI:** No ecossistema do GitHub Actions, o ficheiro de workflow `playwright.yml` encarrega-se de provisionar as dependências e levantar o servidor antes de correr as suítes de validação em cada *Pull Request* ou *Push*.
 
-### 🛒 Compras
-- **Compras (Aluno):**  
-  - Tela para listar livros disponíveis e registrar compras.  
-  - Tela separada “Minhas Compras” para histórico.
-- **Compras Admin/Funcionário:**  
-  - Tela “Compras Admin” listando todas as compras.  
-  - Aprovar ou cancelar, com controle de estoque.
+---
 
-### 📊 Dashboard
-- **Visão Aluno:** Livros disponíveis, total de livros, quantidade de alunos.
-- **Visão Funcionário:** Arrendamentos pendentes, livros disponíveis, número de funcionários.
-- **Visão Admin:** Totais de livros/usuários e contagem de Alunos, Funcionários e Admins.
+## 🛠️ Ferramentas Necessárias e Pré-requisitos
 
-### ❤️ Sistema de Favoritos
-- Adicionar / remover livros dos favoritos.
-- Página “Meus Favoritos” listando apenas os livros favoritados.
+Antes de executar os testes, garante que tens as seguintes ferramentas instaladas na tua máquina:
 
-### 🎨 Interface
-- Layout responsivo (desktop, tablet, mobile).
-- Navegação consistente em todas as páginas.
-- Alertas de sucesso/erro nas principais ações.
+* **[Node.js](https://nodejs.org/)** (Versão LTS recomendada - v18 ou superior)
+* **Gestor de pacotes NPM** (Instalado automaticamente com o Node.js)
+* **Editor de Código / IDE:** [Visual Studio Code (VS Code)](https://code.visualstudio.com/) - *Recomendado*
+* **Extensão do VS Code:** *Playwright Test for VSCode* (Opcional, útil para execução visual)
+* **Github: ** Para clonar o repositório.
 
-***
+---
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Instalação e Configuração
 
-### Backend
-- **Node.js** – Runtime JavaScript.
-- **Express** – Framework web.
-- **CORS** – Liberação de acesso entre origens.
-- **Swagger UI Express** + **Swagger JSDoc** – Documentação interativa da API.
+  Siga os passos abaixo para preparar o ambiente local:
 
-### Frontend
-- **HTML5** – Estrutura semântica.
-- **CSS3** – Layout com flexbox e grid.
-- **JavaScript (ES6+)** – Lógica da aplicação.
-- **Fetch API** – Requisições HTTP assíncronas.
+  1. **Clonar o repositório:**
+    bash
+    git clone https://github.com/beans79/CRE-Project-POM.git
+    cd CRE-Project-POM
 
-***
+  2. Instalar as dependências do projeto:
+    Este comando instalará o ecossistema do Playwright e outras bibliotecas necessárias declaradas no package.json.
+      bash
+      npm install
 
-## 📋 Pré‑requisitos
+  3. Instalar os Browsers do Playwright:
+    O Playwright precisa fazer download dos binários limpos dos navegadores (Chromium, Firefox, WebKit) para correr os testes de UI.~
+      bash
+      npx playwright install
 
-- Node.js 14+ (LTS recomendada).
-- npm.
-- Git (para clonar o repositório).
+🧪 Como Executar os Testes
+    No inicio da execução dos testes no playwright, irá instanciar o servidor, aguardar que ele fique disponível, correr os testes e fechá-lo de seguida.
+  1. Executar Todos os Testes (UI e API)
+    Corre todas as suítes de teste em modo headless (em segundo plano):
+      bash
+      npx playwright test
+  2. Executar Apenas os Testes de Interface (Frontend)
+    Para focar apenas na validação visual e fluxos E2E da UI:
 
-***
+      Bash
+      npx playwright test frontend-biblioteca.spec.js
+  3. Executar Apenas os Testes de API
+    Para focar apenas na validação dos endpoints e regras de negócio de back-end:
+      bash
+      npx playwright test  .\tests\api-biblioteca.spec.js  
+  4. Executar em Modo Gráfico (UI Mode)
+    Recomendado para desenvolvimento e depuração. Abre uma interface interativa que permite ver o passo a passo, logs e efetuar time-travel nos testes de interface:
+      bash
+      npx playwright test --ui .\\tests\\biblioteca-pom\\frontend-biblioteca.spec.js 
+  5. Executar um teste especifico
+    Permite a execução de um teste especifico. 
+    Ex: (CT-FE-001 - Fluxo Completo de Registro (Aluno))
+      bash
+      npx playwright test -g 'CT-FE-001 - Fluxo Completo de Registro (Aluno)'
+  6. Acessos principais:
+    - Aplicação (login): `http://localhost:3000/login.html`  
+    - Swagger: `http://localhost:3000/api-docs`  
+    - Base da API: `http://localhost:3000`  
 
-## 🚀 Como Executar Localmente
-
-```bash
-git clone https://github.com/brunonf15/biblioteca-pro-max.git
-cd crud-livros-expandido
-npm install
-npm start
-```
-
-O servidor sobe na porta **3000**.
-
-Acessos principais:
-
-- Aplicação (login): `http://localhost:3000/login.html`  
-- Swagger: `http://localhost:3000/api-docs`  
-- Base da API: `http://localhost:3000`
+📊 Relatórios de Testes (Reports)
+  Após a conclusão de qualquer execução, o Playwright gera automaticamente um relatório HTML detalhado. Para abrir o último relatório gerado e inspecionar falhas ou métricas, executa:
+    bash
+    npx playwright show-report
 
 ***
 
 ## 📁 Estrutura do Projeto
 
 ```text
-crud-livros-expandido/
-├── package.json           # Dependências e scripts
-├── server.js              # Servidor Express e rotas da API
-├── README.md              # Este arquivo
-└── public/
-    ├── css/
-    │   └── style.css
-    ├── js/
-    │   ├── auth.js              # Autenticação no front e menu dinâmico
-    │   ├── login.js             # Lógica de login
-    │   ├── registro.js          # Registro (sempre aluno)
-    │   ├── dashboard.js         # Dashboard com visão por perfil
-    │   ├── livros.js            # CRUD de livros (UI)
-    │   ├── detalhes.js          # Página de detalhes do livro
-    │   ├── favoritos.js         # Meus favoritos
-    │   ├── arrendamentos.js     # Meus arrendamentos (aluno)
-    │   ├── aprovacoes.js        # Aprovação de arrendamentos (func/admin)
-    │   ├── compras.js           # Tela de compras (aluno)
-    │   ├── minhas-compras.js    # Histórico de compras (aluno)
-    │   ├── compras-admin.js     # Gestão de compras (func/admin)
-    │   └── admin-usuarios.js    # CRUD de usuários (admin)
-    ├── login.html
-    ├── registro.html
-    ├── dashboard.html
-    ├── livros.html
-    ├── detalhes.html
-    ├── favoritos.html
-    ├── arrendamentos.html
-    ├── aprovacoes.html
-    ├── compras.html
-    ├── minhas-compras.html
-    └── admin-usuarios.html
+CRE-PROJECT-POM/
+│
+├── controllers/                   # Camada API Object Model (AOM)
+│   └── BibliotecaApiController.js # Métodos HTTP encapsulados (GET,POST, etc.)
+│
+├── pages/                         # Camada Page Object Model (POM) - UI
+│   ├── LoginPage.js               # Seletores e ações da tela de Login
+│   ├── RegistroPage.js            # Seletores e ações da tela de Registo
+│   ├── DashboardPage.js           # Seletores e ações do Painel Principal
+│   ├── LivrosPage.js        # Seletores e ações da listagem/cadastro de Livros
+│   ├── DetalhesPage.js      # Seletores e ações da página de detalhes do Livro
+│   ├── FavoritosPage.js      # Seletores e ações da página de Favoritos
+│   ├── ArrendamentosPage.js  # Seletores e ações de Empréstimos/Arrendamentos
+│   └── AdminUsuariosPage.js  # Seletores e ações da gestão de utilizadores
+│
+├── tests/                    # Ficheiros de Especificação
+│   ├── frontend-biblioteca.spec.js        # Testes de Interface Gráfica (UI)
+│   └── api-biblioteca.spec.js             # Testes de Integração e Contratos (API)
+│
+├── playwright.config.js        # Configurações globais do Playwright 
+└── package.json                # Dependências do projeto (Playwright, scripts)
 ```
+### Resumo dos Componentes
+  - tests/: Guarda estritamente as asserções (expect) e o fluxo de cenários de teste. Eles não sabem quais são os seletores CSS ou os endpoints exatos; apenas chamam os métodos das Pages e Controllers.
 
+  - pages/: Contém classes em JavaScript. Cada classe representa uma página web e mapeia os seus elementos (como inputs e botões) e funções (como fazerLogin() ou cadastrarLivro()).
+
+  - controllers/: Funciona como o POM, mas para o teste da API. Centraliza as chamadas de rede (ex: this.request.post('/login')), reduzindo a repetição de código nos testes.
 ***
 
 ## 🔌 Endpoints da API (Resumo)
@@ -205,20 +185,6 @@ crud-livros-expandido/
 
 ***
 
-## 🎓 Uso para Testes Automatizados
-
-Pensado para treinar:
-
-- **API Testing:** registro/login, CRUD de livros, arrendamentos, compras, erros de validação, estados pendente/aprovado/rejeitado.  
-- **UI Testing:** fluxos reais (login, navegação por perfis, favoritos, compras, painel admin), validação de formulários e comportamento condicional por tipo de usuário.
-
-Ferramentas sugeridas:
-
-- API: Postman, Insomnia, Rest Assured, Playwright, Cypress.  
-- UI: Selenium WebDriver, Cypress, Playwright, Puppeteer.
-
-***
-
 ## 💡 Dados de Teste
 
 Usuários iniciais:
@@ -240,14 +206,6 @@ Livros iniciais:
 
 ***
 
-## 📝 Licença e Autor
+## 📝 Autor dos Testes
+    Armando Teixeira
 
-Projeto de código aberto para fins educacionais.
-
-**Autor:** Bruno Figueiredo  
-- GitHub: [@brunonf15](https://github.com/brunonf15)  
-- LinkedIn: [Bruno Figueiredo](https://www.linkedin.com/in/brunonascimento15/)
-
-***
-
-Se esse projeto ajudar nos seus estudos ou testes, considere dar uma ⭐ no GitHub!
