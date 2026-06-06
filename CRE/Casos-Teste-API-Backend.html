@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casos de Teste – Backend (API)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            color: #1a73e8;
+            font-size: 32px;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1a73e8;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            color: #1a73e8;
+            font-size: 24px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1a73e8;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #34a853;
+            font-size: 16px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+        
+        .test-case {
+            border: 1px solid #e0e0e0;
+            padding: 18px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background: #fafafa;
+            page-break-inside: avoid;
+        }
+        
+        .test-case h3 {
+            color: #1a73e8;
+            margin-top: 0;
+        }
+        
+        .label {
+            font-weight: 600;
+            color: #666;
+            margin-top: 12px;
+            margin-bottom: 6px;
+        }
+        
+        .label strong {
+            color: #1a73e8;
+        }
+        
+        pre {
+            background: #f5f5f5;
+            padding: 12px;
+            border-left: 4px solid #1a73e8;
+            margin: 10px 0;
+            overflow-x: auto;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+        
+        code {
+            font-family: 'Courier New', monospace;
+        }
+        
+        ul {
+            margin-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #34a853;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 12px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        
+        .section-intro {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        @media print {
+            .test-case {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <h1>Casos de Teste – Backend (API)</h1>
+        <p style="color: #666; margin-bottom: 20px;">
+            Este documento contém <strong>32 casos de teste</strong> para automação da API do sistema de biblioteca,
+            distribuídos em 7 categorias funcionais.
+        </p>
+
+        <!-- SEÇÃO 1: AUTENTICAÇÃO E PERFIS -->
+        <h2>1. Autenticação e Perfis</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar autenticação, registro e controle de acesso baseado em perfis.</p>
+            <p><strong>Total de casos:</strong> 4 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-001</div>
+            <h3>Registro de Novo Usuário Aluno (Sucesso)</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /registro</div>
+            <div class="label"><strong>Objetivo:</strong> Validar criação de novo usuário público (sempre Aluno) com dados válidos.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Email <code>maria.silva@teste.com</code> não está cadastrado.</li>
+            </ul>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "nome": "Maria Silva",
+  "email": "maria.silva@teste.com",
+  "senha": "senha123"
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>201</strong></li>
+                <li>Corpo contém campo <code>mensagem</code> com <code>"Usuário criado com sucesso"</code></li>
+                <li>Corpo contém objeto <code>usuario</code> com <code>id</code>, <code>nome</code>, <code>email</code>, <code>tipo</code></li>
+                <li>Campo <code>senha</code> <strong>não</strong> presente na resposta</li>
+                <li><code>id</code> é inteiro positivo</li>
+                <li><code>tipo</code> deve ser <strong>1</strong> (Aluno)</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-002</div>
+            <h3>Registro com Email Duplicado (Falha)</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /registro</div>
+            <div class="label"><strong>Objetivo:</strong> Validar que o sistema impede registro com email já existente.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Email <code>admin@biblioteca.com</code> já cadastrado.</li>
+            </ul>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "nome": "João Santos",
+  "email": "admin@biblioteca.com",
+  "senha": "senha456"
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>400</strong></li>
+                <li>Corpo contém <code>mensagem</code> = <code>"Email já cadastrado"</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-003</div>
+            <h3>Login com Credenciais Válidas (Admin)</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /login</div>
+            <div class="label"><strong>Objetivo:</strong> Validar autenticação bem-sucedida.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "email": "admin@biblioteca.com",
+  "senha": "123456"
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Corpo contém <code>mensagem</code> = <code>"Login realizado com sucesso"</code></li>
+                <li>Corpo contém objeto <code>usuario</code> <strong>sem</strong> campo <code>senha</code></li>
+                <li><code>usuario.tipo</code> = <strong>3</strong> (Admin)</li>
+                <li>Tempo de resposta &lt; <strong>2000 ms</strong></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-004</div>
+            <h3>Login com Credenciais Inválidas</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /login</div>
+            <div class="label"><strong>Objetivo:</strong> Validar rejeição de credenciais incorretas.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "email": "admin@biblioteca.com",
+  "senha": "senhaerrada"
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>401</strong></li>
+                <li>Corpo contém <code>mensagem</code> = <code>"Email ou senha incorretos"</code></li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 2: LIVROS -->
+        <h2>2. Livros</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar operações CRUD de livros, estoque e preço.</p>
+            <p><strong>Total de casos:</strong> 8 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-005</div>
+            <h3>Listar Todos os Livros</h3>
+            <div class="label"><strong>Endpoint:</strong> GET /livros</div>
+            <div class="label"><strong>Objetivo:</strong> Validar retorno da lista completa de livros.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Corpo é um <strong>array</strong></li>
+                <li>Cada item possui: <code>id</code>, <code>nome</code>, <code>autor</code>, <code>paginas</code>, <code>descricao</code>, <code>imagemUrl</code>, <code>dataCadastro</code>, <code>estoque</code>, <code>preco</code></li>
+                <li><code>paginas</code> é inteiro positivo</li>
+                <li><code>dataCadastro</code> em formato ISO 8601</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-006</div>
+            <h3>Listar Livros Disponíveis</h3>
+            <div class="label"><strong>Endpoint:</strong> GET /livros/disponiveis</div>
+            <div class="label"><strong>Objetivo:</strong> Validar filtragem somente de livros com estoque &gt; 0.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Corpo é array</li>
+                <li>Todos os itens possuem <code>estoque &gt; 0</code></li>
+                <li>Cada item pode possuir campo extra <code>disponivel = true</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-007</div>
+            <h3>Buscar Livro por ID (Existente)</h3>
+            <div class="label"><strong>Endpoint:</strong> GET /livros/1</div>
+            <div class="label"><strong>Objetivo:</strong> Validar retorno de livro específico.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Corpo contém <code>id = 1</code></li>
+                <li>Campos obrigatórios (<code>nome</code>, <code>autor</code>, <code>paginas</code>) não vazios</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-008</div>
+            <h3>Buscar Livro por ID (Inexistente)</h3>
+            <div class="label"><strong>Endpoint:</strong> GET /livros/9999</div>
+            <div class="label"><strong>Objetivo:</strong> Validar tratamento de ID não encontrado.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>404</strong></li>
+                <li>Corpo contém <code>mensagem</code> = <code>"Livro não encontrado"</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-009</div>
+            <h3>Adicionar Novo Livro</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /livros</div>
+            <div class="label"><strong>Objetivo:</strong> Validar criação de novo livro com estoque e preço.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "nome": "Código Limpo",
+  "autor": "Robert C. Martin",
+  "paginas": 425,
+  "descricao": "Manual de boas práticas",
+  "imagemUrl": "https://exemplo.com/imagem.jpg",
+  "estoque": 10,
+  "preco": 59.9
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>201</strong></li>
+                <li>Corpo contém livro criado com <code>id</code> gerado automaticamente</li>
+                <li><code>dataCadastro</code> preenchido automaticamente (formato ISO)</li>
+                <li>Demais campos correspondem aos dados enviados</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-010</div>
+            <h3>Adicionar Livro sem Campos Obrigatórios (Falha)</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /livros</div>
+            <div class="label"><strong>Objetivo:</strong> Validar validação de campos obrigatórios.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "nome": "",
+  "autor": "",
+  "paginas": null
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>400</strong></li>
+                <li>Mensagem indicando ausência de campos obrigatórios</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-011</div>
+            <h3>Atualizar Livro Existente</h3>
+            <div class="label"><strong>Endpoint:</strong> PUT /livros/1</div>
+            <div class="label"><strong>Objetivo:</strong> Validar atualização de dados do livro.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "nome": "Clean Code - Edição Atualizada",
+  "autor": "Robert C. Martin",
+  "paginas": 464,
+  "descricao": "Guia completo atualizado",
+  "imagemUrl": "https://exemplo.com/nova-imagem.jpg",
+  "estoque": 7,
+  "preco": 79.9
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li><code>id</code> permanece <strong>1</strong></li>
+                <li>Campos atualizados com novos valores</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-012</div>
+            <h3>Deletar Livro</h3>
+            <div class="label"><strong>Endpoint:</strong> DELETE /livros/2</div>
+            <div class="label"><strong>Objetivo:</strong> Validar remoção de livro.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Mensagem <code>"Livro removido"</code></li>
+                <li><code>GET /livros/2</code> subsequente retorna <strong>404</strong></li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 3: ESTATÍSTICAS -->
+        <h2>3. Estatísticas</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar cálculo correto de estatísticas do sistema.</p>
+            <p><strong>Total de casos:</strong> 1 teste</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-013</div>
+            <h3>Obter Estatísticas da Biblioteca</h3>
+            <div class="label"><strong>Endpoint:</strong> GET /estatisticas</div>
+            <div class="label"><strong>Objetivo:</strong> Validar cálculo de estatísticas gerais.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Corpo contém: <code>totalLivros</code>, <code>totalPaginas</code>, <code>totalUsuarios</code>, <code>usuariosPorTipo</code>, <code>livrosDisponiveis</code>, <code>arrendamentosPendentes</code>, <code>comprasPendentes</code></li>
+                <li>Todos os valores numéricos são inteiros ≥ 0</li>
+                <li>Soma de <code>usuariosPorTipo.alunos + funcionarios + admins</code> = <code>totalUsuarios</code></li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 4: FAVORITOS -->
+        <h2>4. Favoritos</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar funcionalidades de favoritar, remover e listar favoritos.</p>
+            <p><strong>Total de casos:</strong> 4 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-014</div>
+            <h3>Adicionar Livro aos Favoritos</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /favoritos</div>
+            <div class="label"><strong>Objetivo:</strong> Validar funcionalidade de favoritar.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "usuarioId": 1,
+  "livroId": 1
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>201</strong></li>
+                <li>Mensagem <code>"Livro adicionado aos favoritos"</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-015</div>
+            <h3>Adicionar Livro Já Favoritado (Falha)</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /favoritos</div>
+            <div class="label"><strong>Objetivo:</strong> Impedir duplicidade de favoritos.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Livro 1 já favoritado pelo usuário 1.</li>
+            </ul>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "usuarioId": 1,
+  "livroId": 1
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>400</strong></li>
+                <li>Mensagem indicando que o livro já está nos favoritos</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-016</div>
+            <h3>Listar Favoritos de Usuário</h3>
+            <div class="label"><strong>Endpoint:</strong> GET /favoritos/1</div>
+            <div class="label"><strong>Objetivo:</strong> Validar retorno de favoritos.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Corpo é array de livros</li>
+                <li>Todos os itens correspondem a livros favoritados pelo usuário 1</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-017</div>
+            <h3>Remover Livro dos Favoritos</h3>
+            <div class="label"><strong>Endpoint:</strong> DELETE /favoritos</div>
+            <div class="label"><strong>Objetivo:</strong> Validar remoção de favorito.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "usuarioId": 1,
+  "livroId": 1
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Mensagem <code>"Livro removido dos favoritos"</code></li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 5: ARRENDAMENTOS -->
+        <h2>5. Arrendamentos</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar solicitação, aprovação e rejeição de arrendamentos.</p>
+            <p><strong>Total de casos:</strong> 5 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-018</div>
+            <h3>Criar Arrendamento Válido</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /arrendamentos</div>
+            <div class="label"><strong>Objetivo:</strong> Validar criação de arrendamento com estoque disponível.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "usuarioId": 3,
+  "livroId": 1,
+  "dataInicio": "2025-12-20",
+  "dataFim": "2025-12-27"
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>201</strong></li>
+                <li>Corpo contém <code>id</code>, <code>usuarioId</code>, <code>livroId</code>, <code>status</code>, <code>criadoEm</code></li>
+                <li><code>status</code> = <code>"PENDENTE"</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-019</div>
+            <h3>Criar Arrendamento sem Estoque (Falha)</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /arrendamentos</div>
+            <div class="label"><strong>Objetivo:</strong> Validar bloqueio de arrendamento sem estoque.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Livro com <code>estoque = 0</code></li>
+            </ul>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>400</strong></li>
+                <li>Mensagem <code>"Livro sem estoque para arrendamento"</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-020</div>
+            <h3>Atualizar Status de Arrendamento para APROVADO</h3>
+            <div class="label"><strong>Endpoint:</strong> PUT /arrendamentos/{id}/status</div>
+            <div class="label"><strong>Objetivo:</strong> Validar aprovação e desconto de estoque.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "status": "APROVADO"
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Arrendamento com <code>status = "APROVADO"</code></li>
+                <li>Estoque do livro reduzido em 1</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-021</div>
+            <h3>Atualizar Status com Valor Inválido (Falha)</h3>
+            <div class="label"><strong>Endpoint:</strong> PUT /arrendamentos/{id}/status</div>
+            <div class="label"><strong>Objetivo:</strong> Validar rejeição de status inválido.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "status": "EM_ANALISE"
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>400</strong></li>
+                <li>Mensagem <code>"Status inválido"</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-022</div>
+            <h3>Listar Arrendamentos do Usuário</h3>
+            <div class="label"><strong>Endpoint:</strong> GET /arrendamentos/me?usuarioId=3</div>
+            <div class="label"><strong>Objetivo:</strong> Validar listagem de arrendamentos pessoais.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Corpo é array</li>
+                <li>Todos os itens possuem <code>usuarioId = 3</code></li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 6: COMPRAS -->
+        <h2>6. Compras</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar criação, aprovação e cancelamento de compras.</p>
+            <p><strong>Total de casos:</strong> 6 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-023</div>
+            <h3>Criar Compra com Estoque Suficiente</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /compras</div>
+            <div class="label"><strong>Objetivo:</strong> Validar criação de compra válida.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "usuarioId": 3,
+  "livroId": 1,
+  "quantidade": 2
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>201</strong></li>
+                <li>Compra com <code>status = "PENDENTE"</code></li>
+                <li>Campo <code>total</code> = <code>precoDoLivro * 2</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-024</div>
+            <h3>Criar Compra com Estoque Insuficiente (Falha)</h3>
+            <div class="label"><strong>Endpoint:</strong> POST /compras</div>
+            <div class="label"><strong>Objetivo:</strong> Validar bloqueio de compra com estoque insuficiente.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Livro com <code>estoque &lt; 100</code></li>
+            </ul>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "usuarioId": 3,
+  "livroId": 1,
+  "quantidade": 100
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>400</strong></li>
+                <li>Mensagem <code>"Estoque insuficiente"</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-025</div>
+            <h3>Aprovar Compra</h3>
+            <div class="label"><strong>Endpoint:</strong> PUT /compras/{id}/status</div>
+            <div class="label"><strong>Objetivo:</strong> Validar aprovação de compra.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "status": "APROVADA"
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Compra com <code>status = "APROVADA"</code></li>
+                <li>Estoque do livro reduzido conforme <code>quantidade</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-026</div>
+            <h3>Cancelar Compra</h3>
+            <div class="label"><strong>Endpoint:</strong> PUT /compras/{id}/status</div>
+            <div class="label"><strong>Objetivo:</strong> Validar cancelamento de compra.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "status": "CANCELADA"
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Compra com <code>status = "CANCELADA"</code></li>
+                <li>Estoque não é alterado (comparado ao valor anterior)</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-027</div>
+            <h3>Listar Compras do Usuário</h3>
+            <div class="label"><strong>Endpoint:</strong> GET /compras/me?usuarioId=3</div>
+            <div class="label"><strong>Objetivo:</strong> Validar listagem de compras pessoais.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Array de compras do usuário 3</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-028</div>
+            <h3>Listar Todas as Compras</h3>
+            <div class="label"><strong>Endpoint:</strong> GET /compras</div>
+            <div class="label"><strong>Objetivo:</strong> Validar listagem de todas as compras (admin).</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Array com compras de múltiplos usuários (quando existirem)</li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 7: ADMIN USUÁRIOS -->
+        <h2>7. Admin Usuários</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar operações CRUD de usuários por administrador.</p>
+            <p><strong>Total de casos:</strong> 4 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-029</div>
+            <h3>Listar Usuários</h3>
+            <div class="label"><strong>Endpoint:</strong> GET /usuarios</div>
+            <div class="label"><strong>Objetivo:</strong> Validar listagem de usuários.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Array de usuários sem campo <code>senha</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-030</div>
+            <h3>Atualizar Usuário</h3>
+            <div class="label"><strong>Endpoint:</strong> PUT /usuarios/2</div>
+            <div class="label"><strong>Objetivo:</strong> Validar atualização de dados do usuário.</div>
+            
+            <div class="label"><strong>Dados de Entrada (JSON):</strong></div>
+            <pre><code>{
+  "nome": "João Funcionário Atualizado",
+  "email": "func.atualizado@biblio.com",
+  "tipo": 2
+}</code></pre>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Usuário 2 com novos <code>nome</code> e <code>email</code></li>
+                <li><code>tipo = 2</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-031</div>
+            <h3>Excluir Usuário (Não-Admin Principal)</h3>
+            <div class="label"><strong>Endpoint:</strong> DELETE /usuarios/3</div>
+            <div class="label"><strong>Objetivo:</strong> Validar exclusão de usuário comum.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>200</strong></li>
+                <li>Mensagem <code>"Usuário deletado com sucesso"</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-API-032</div>
+            <h3>Tentar Excluir Admin Principal (Falha)</h3>
+            <div class="label"><strong>Endpoint:</strong> DELETE /usuarios/1</div>
+            <div class="label"><strong>Objetivo:</strong> Validar proteção do admin principal.</div>
+            
+            <div class="label"><strong>Validações Esperadas:</strong></div>
+            <ul>
+                <li>Status code: <strong>403</strong></li>
+                <li>Mensagem indicando que o admin principal não pode ser deletado</li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>

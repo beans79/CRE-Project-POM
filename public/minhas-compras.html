@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minhas Compras - Biblioteca</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Cabeçalho -->
+    <div class="header">
+      <h1>Minhas Compras</h1>
+      <div class="user-info">
+        <span class="user-name" id="nomeUsuario"></span>
+        <button class="nav-btn logout" onclick="logout()">Sair</button>
+      </div>
+    </div>
+
+    <!-- Menu (mesma estrutura das outras páginas) -->
+    <div class="nav">
+      <a href="dashboard.html" class="nav-btn">Dashboard</a>
+      <a href="livros.html" class="nav-btn">Livros</a>
+      <a href="favoritos.html" class="nav-btn">Favoritos</a>
+      <a href="arrendamentos.html" class="nav-btn">Meus Arrendamentos</a>
+      <a href="compras.html" class="nav-btn">Compras</a>
+      <a href="minhas-compras.html" class="nav-btn">Minhas Compras</a>
+    </div>
+
+    <h2>Histórico de Compras</h2>
+
+    <div id="mensagem-vazio" style="text-align:center; color:#666; display:none;">
+      Você ainda não tem compras registradas.
+    </div>
+
+    <div class="books-grid" id="lista-compras">
+      <!-- cards de compras serão inseridos via JS -->
+    </div>
+  </div>
+
+  <script src="js/minhas-compras.js"></script>
+</body>
+</html>

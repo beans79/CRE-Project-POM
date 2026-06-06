@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casos de Teste – Frontend (UI)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            color: #1a73e8;
+            font-size: 32px;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #1a73e8;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            color: #1a73e8;
+            font-size: 24px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1a73e8;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #34a853;
+            font-size: 16px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+        
+        .test-case {
+            border: 1px solid #e0e0e0;
+            padding: 18px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            background: #fafafa;
+            page-break-inside: avoid;
+        }
+        
+        .test-case h3 {
+            color: #1a73e8;
+            margin-top: 0;
+        }
+        
+        .label {
+            font-weight: 600;
+            color: #666;
+            margin-top: 12px;
+            margin-bottom: 6px;
+        }
+        
+        .label strong {
+            color: #1a73e8;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d32f2f;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 6px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #34a853;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            margin-bottom: 10px;
+        }
+        
+        .section-intro {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        strong {
+            color: #1a73e8;
+        }
+        
+        @media print {
+            .test-case {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <h1>Casos de Teste – Frontend (UI)</h1>
+        <p style="color: #666; margin-bottom: 20px;">
+            Este documento contém <strong>25 casos de teste</strong> para automação da interface do sistema de biblioteca,
+            distribuídos em 9 categorias funcionais.
+        </p>
+
+        <!-- SEÇÃO 1: REGISTRO E LOGIN -->
+        <h2>1. Registro e Login</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar fluxos de registro, autenticação e controle de acesso.</p>
+            <p><strong>Total de casos:</strong> 4 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-001</div>
+            <h3>Fluxo Completo de Registro (Aluno)</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar criação de conta de novo aluno.</div>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/registro.html</code></li>
+                <li>Preencher "Nome" com <code>Carlos Oliveira</code></li>
+                <li>Preencher "Email" com <code>carlos@teste.com</code></li>
+                <li>Preencher "Senha" com <code>senha123</code></li>
+                <li>Preencher "Confirmar Senha" com <code>senha123</code></li>
+                <li>Clicar em <strong>"Registrar"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert de sucesso exibido</li>
+                <li>Redirecionamento para <code>/login.html</code></li>
+                <li>Formulário não permanece preenchido após redirecionamento</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-002</div>
+            <h3>Validação de Senhas Não Correspondentes</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar mensagem de erro quando senhas não coincidem.</div>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/registro.html</code></li>
+                <li>Preencher campos obrigatórios</li>
+                <li>"Senha" = <code>senha123</code></li>
+                <li>"Confirmar Senha" = <code>senha456</code></li>
+                <li>Clicar em <strong>"Registrar"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert <code>"As senhas não conferem."</code> exibido</li>
+                <li>Usuário permanece na página de registro</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-003</div>
+            <h3>Login com Sucesso (Admin)</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar fluxo de login do administrador.</div>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/login.html</code></li>
+                <li>Preencher "Email" com <code>admin@biblioteca.com</code></li>
+                <li>Preencher "Senha" com <code>123456</code></li>
+                <li>Clicar em <strong>"Entrar"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert <code>"Login realizado com sucesso!"</code> exibido</li>
+                <li>Redirecionamento para <code>/dashboard.html</code></li>
+                <li>Nome do usuário aparece no header</li>
+                <li>Objeto <code>usuario</code> armazenado no <code>localStorage</code> com <code>tipo = 3</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-004</div>
+            <h3>Login com Credenciais Inválidas</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar tratamento de erro de login.</div>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/login.html</code></li>
+                <li>Preencher "Email" com <code>admin@biblioteca.com</code></li>
+                <li>Preencher "Senha" com <code>errada</code></li>
+                <li>Clicar em <strong>"Entrar"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert com mensagem de erro exibido</li>
+                <li>Usuário permanece em <code>/login.html</code></li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 2: PROTEÇÃO DE ROTAS E NAVEGAÇÃO -->
+        <h2>2. Proteção de Rotas e Navegação</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar segurança de acesso e comportamento do menu.</p>
+            <p><strong>Total de casos:</strong> 3 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-005</div>
+            <h3>Proteção de Rotas sem Login</h3>
+            <div class="label"><strong>Objetivo:</strong> Garantir que páginas protegidas exijam autenticação.</div>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Limpar <code>localStorage</code></li>
+                <li>Navegar diretamente para <code>/dashboard.html</code></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Redirecionamento automático para <code>/login.html</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-006</div>
+            <h3>Menu Dinâmico – Aluno</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar itens do menu para Aluno.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Login como aluno (ex.: <code>aluna@teste.com</code>)</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/dashboard.html</code></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Menu contém: Dashboard, Livros, Favoritos, Meus Arrendamentos, Compras, Minhas Compras</li>
+                <li>Clique em cada item abre a página correspondente</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-007</div>
+            <h3>Menu Dinâmico – Admin</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar itens do menu para Admin.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Login como admin</li>
+            </ul>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Menu contém todos os itens do aluno/funcionário</li>
+                <li>Link adicional para <code>Usuários (Admin)</code> → <code>/admin-usuarios.html</code></li>
+                <li>Clique em "Usuários (Admin)" abre a página de administração</li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 3: DASHBOARD -->
+        <h2>3. Dashboard</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar exibição de estatísticas e informações.</p>
+            <p><strong>Total de casos:</strong> 2 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-008</div>
+            <h3>Dashboard – Visão Admin</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar estatísticas para admin.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Login como admin</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/dashboard.html</code></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Cards exibem: Total de Livros, Total de Usuários, Livros Disponíveis, Alunos, Funcionários, Administradores</li>
+                <li>Se houver livros, "Livros Disponíveis" > 0</li>
+                <li>Grid de "Livros Disponíveis" exibe no máximo 5 livros</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-009</div>
+            <h3>Dashboard – Visão Aluno</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar estatísticas para aluno.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Login como aluno</li>
+            </ul>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Cards de estatística condizem com definição para aluno</li>
+                <li>Grid de livros recentes carregada sem erros</li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 4: LIVROS -->
+        <h2>4. Livros</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar operações com livros (cadastro, visualização, edição).</p>
+            <p><strong>Total de casos:</strong> 3 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-010</div>
+            <h3>Cadastro de Livro via UI</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar criação de livro pela tela.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Login como funcionário ou admin</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/livros.html</code></li>
+                <li>Preencher:
+                    <ul style="margin-top: 5px;">
+                        <li>Nome: <code>O Hobbit</code></li>
+                        <li>Autor: <code>J.R.R. Tolkien</code></li>
+                        <li>Páginas: <code>310</code></li>
+                        <li>Descrição: texto</li>
+                        <li>URL da Imagem: URL válida</li>
+                        <li>Estoque: <code>5</code></li>
+                        <li>Preço: <code>39.9</code></li>
+                    </ul>
+                </li>
+                <li>Clicar em <strong>"Adicionar Livro"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert <code>"Livro adicionado com sucesso!"</code> exibido</li>
+                <li>Formulário limpo</li>
+                <li>Novo livro aparece na lista</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-011</div>
+            <h3>Validação de Campos Obrigatórios no Livro</h3>
+            <div class="label"><strong>Objetivo:</strong> Garantir que campos obrigatórios sejam verificados.</div>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/livros.html</code></li>
+                <li>Tentar submeter formulário vazio</li>
+                <li>Tentar submeter com apenas alguns campos</li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Navegador exibe mensagens de validação HTML5</li>
+                <li>Formulário não é submetido</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-012</div>
+            <h3>Visualizar Detalhes de Livro</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar página de detalhes.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Pelo menos 1 livro existe</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/livros.html</code></li>
+                <li>Clicar em um card de livro</li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Redirecionamento para <code>/detalhes.html?id={id}</code></li>
+                <li>Imagem, nome, autor, páginas, descrição e data exibidos</li>
+                <li>Botões de ação (favoritar, deletar etc.) visíveis</li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 5: FAVORITOS -->
+        <h2>5. Favoritos</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar funcionalidades de favoritação.</p>
+            <p><strong>Total de casos:</strong> 3 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-013</div>
+            <h3>Adicionar Livro aos Favoritos pela UI</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar fluxo de favoritar.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Login como aluno ou admin</li>
+                <li>Livro existe</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/detalhes.html?id=1</code></li>
+                <li>Clicar em <strong>"Adicionar aos Favoritos"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert de sucesso exibido</li>
+                <li>Botão muda para algo como "Remover dos Favoritos"</li>
+                <li>Livro aparece em <code>/favoritos.html</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-014</div>
+            <h3>Remover Livro dos Favoritos</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar remoção de favorito.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Livro já favoritado</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/detalhes.html?id=1</code></li>
+                <li>Clicar em <strong>"Remover dos Favoritos"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert de remoção exibido</li>
+                <li>Botão volta para "Adicionar aos Favoritos"</li>
+                <li>Livro não aparece mais em <code>/favoritos.html</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-015</div>
+            <h3>Listar Livros Favoritos</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar página de favoritos.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Usuário com ao menos 1 favorito</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/favoritos.html</code></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Grid com cards de livros favoritos</li>
+                <li>Se não houver favoritos, mensagem <code>"Você ainda não tem livros favoritos."</code> exibida</li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 6: ARRENDAMENTOS -->
+        <h2>6. Arrendamentos</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar fluxo de arrendamentos (empréstimos).</p>
+            <p><strong>Total de casos:</strong> 2 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-016</div>
+            <h3>Solicitar Novo Arrendamento</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar fluxo de solicitação.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Login como aluno</li>
+                <li>Livro disponível</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/arrendamentos.html</code></li>
+                <li>Selecionar um livro no select</li>
+                <li>Preencher datas válidas de início e fim</li>
+                <li>Clicar em <strong>"Solicitar Arrendamento"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert de sucesso exibido</li>
+                <li>Arrendamento aparece em "Meus Arrendamentos" com status <code>"PENDENTE"</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-017</div>
+            <h3>Aprovar Arrendamento</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar aprovação pela tela de funcionário.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Login como funcionário</li>
+                <li>Arrendamento pendente existente</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/aprovacoes.html</code></li>
+                <li>Localizar arrendamento pendente</li>
+                <li>Clicar em <strong>"Aprovar"</strong> e confirmar</li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert de sucesso exibido</li>
+                <li>Status do arrendamento atualizado para <code>"APROVADO"</code></li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 7: COMPRAS -->
+        <h2>7. Compras</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar fluxo de compras de livros.</p>
+            <p><strong>Total de casos:</strong> 2 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-018</div>
+            <h3>Registrar Compra (Aluno)</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar fluxo de compra.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Login como aluno</li>
+                <li>Livro com estoque suficiente</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/compras.html</code></li>
+                <li>Escolher um livro, ajustar quantidade</li>
+                <li>Clicar em <strong>"Comprar"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert de sucesso exibido</li>
+                <li>Estoque exibido do livro reduzido (verificável na tela de livros)</li>
+                <li>Compra aparece em <code>/minhas-compras.html</code> com status <code>"PENDENTE"</code></li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-019</div>
+            <h3>Aprovar Compra (Admin/Funcionário)</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar fluxo de aprovação de compras.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Login como funcionário ou admin</li>
+                <li>Compra pendente existente</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Acessar <code>/compras-admin.html</code></li>
+                <li>Localizar compra pendente</li>
+                <li>Clicar em <strong>"Aprovar"</strong> e confirmar</li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert de sucesso exibido</li>
+                <li>Status da compra altera para <code>"APROVADA"</code></li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 8: ADMIN USUÁRIOS -->
+        <h2>8. Admin Usuários</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar administração de usuários do sistema.</p>
+            <p><strong>Total de casos:</strong> 4 testes</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-020</div>
+            <h3>Acessar Tela de Usuários (Admin)</h3>
+            <div class="label"><strong>Objetivo:</strong> Verificar que apenas admin acessa a tela.</div>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Login como admin</li>
+                <li>Clicar no link "Usuários (Admin)" no menu</li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Página <code>/admin-usuarios.html</code> carregada</li>
+                <li>Conteúdo da área admin visível</li>
+                <li>Ao acessar URL direta como não-admin, mensagem de bloqueio exibida</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-021</div>
+            <h3>Criar Funcionário pela UI Admin</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar criação de usuário funcionário.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Login como admin</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Em <code>/admin-usuarios.html</code>, preencher formulário:
+                    <ul style="margin-top: 5px;">
+                        <li>Nome: <code>Novo Func</code></li>
+                        <li>Email: <code>novo.func@teste.com</code></li>
+                        <li>Senha: <code>123456</code></li>
+                        <li>Tipo: <code>Funcionário</code></li>
+                    </ul>
+                </li>
+                <li>Clicar em <strong>"Criar Usuário"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert de sucesso exibido</li>
+                <li>Novo usuário aparece na tabela</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-022</div>
+            <h3>Editar Usuário na Tabela</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar edição inline.</div>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Em <code>/admin-usuarios.html</code>, alterar nome de um usuário existente</li>
+                <li>Clicar em <strong>"Salvar"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert de sucesso exibido</li>
+                <li>Recarregar a página mostra o nome atualizado</li>
+            </ul>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-023</div>
+            <h3>Excluir Usuário</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar exclusão pela UI.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Usuário diferente do admin principal (id 1)</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Em <code>/admin-usuarios.html</code>, clicar em <strong>"Excluir"</strong> na linha do usuário</li>
+                <li>Confirmar a ação</li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li>Alert de sucesso exibido</li>
+                <li>Usuário não aparece mais na tabela</li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 9: LOGOUT -->
+        <h2>9. Logout</h2>
+        <div class="section-intro">
+            <p><strong>Objetivo:</strong> Validar fluxo de saída do sistema.</p>
+            <p><strong>Total de casos:</strong> 1 teste</p>
+        </div>
+
+        <div class="test-case">
+            <div class="badge">CT-FE-024</div>
+            <h3>Logout do Sistema</h3>
+            <div class="label"><strong>Objetivo:</strong> Validar saída do usuário.</div>
+            
+            <div class="label"><strong>Pré-condições:</strong></div>
+            <ul>
+                <li>Qualquer usuário autenticado</li>
+            </ul>
+            
+            <div class="label"><strong>Passos:</strong></div>
+            <ol>
+                <li>Em qualquer página protegida, clicar em <strong>"Sair"</strong></li>
+            </ol>
+            
+            <div class="label"><strong>Validações:</strong></div>
+            <ul>
+                <li><code>localStorage</code> limpo (sem <code>usuario</code>)</li>
+                <li>Redirecionamento para <code>/login.html</code></li>
+                <li>Tentativa de acessar <code>/dashboard.html</code> redireciona para login</li>
+            </ul>
+        </div>
+
+        <div class="test-case" style="margin-top: 30px; background: #e8f4f8; border-color: #1a73e8;">
+            <h3 style="margin: 0; color: #1a73e8;">⚠️ Recomendação de Abordagem</h3>
+            <p style="margin: 10px 0 0 0;">Para máxima eficiência na automatização de testes de UI, recomenda-se:</p>
+            <ul style="margin-top: 10px;">
+                <li><strong>Começar com fluxos críticos:</strong> Login, Registro, Logout e Dashboard</li>
+                <li><strong>Utilizar dados preparados:</strong> Crie dados via API antes dos testes UI</li>
+                <li><strong>Page Objects:</strong> Mapeie elementos UMA VEZ, reutilize em múltiplos testes</li>
+                <li><strong>Dados dinâmicos:</strong> Evite hardcodes, use fixtures ou factory functions</li>
+                <li><strong>Waits explícitos:</strong> Use esperas por elementos, nunca sleeps fixos</li>
+            </ul>
+        </div>
+
+    </div>
+</body>
+</html>

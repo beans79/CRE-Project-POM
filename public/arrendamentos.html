@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Arrendamentos - Biblioteca</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="inicializarAutenticacao()">
+  <div class="container">
+    <div class="header">
+      <h1>📅 Meus Arrendamentos</h1>
+      <div class="user-info">
+        <span class="user-name" id="nomeUsuario"></span>
+        <button class="nav-btn logout" onclick="logout()">Sair</button>
+      </div>
+    </div>
+
+    <div class="nav" id="nav-menu">
+      <!-- preenchido dinamicamente -->
+    </div>
+
+    <h2>Solicitar Novo Arrendamento</h2>
+    <div class="form-container">
+      <form id="form-arrendamento">
+        <div class="form-group">
+          <label for="livroSelect">Livro:</label>
+          <select id="livroSelect" required>
+            <option value="">Selecione um livro...</option>
+            <!-- opções preenchidas via arrendamentos.js -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="dataInicio">Data Início:</label>
+          <input type="date" id="dataInicio" required>
+        </div>
+        <div class="form-group">
+          <label for="dataFim">Data Fim:</label>
+          <input type="date" id="dataFim" required>
+        </div>
+        <button type="submit">Solicitar Arrendamento</button>
+      </form>
+    </div>
+
+    <h2>Meus Arrendamentos</h2>
+    <div class="books-grid" id="lista-arrendamentos"></div>
+  </div>
+  <script src="js/auth.js"></script>
+  <script src="js/arrendamentos.js"></script>
+</body>
+</html>

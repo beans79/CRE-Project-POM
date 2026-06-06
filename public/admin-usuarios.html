@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Usuários</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="inicializarAutenticacao()">
+  <div class="container">
+    <div class="header">
+      <h1>👨‍💻 Administração de Usuários</h1>
+      <div class="user-info">
+        <span class="user-name" id="nomeUsuario"></span>
+        <button class="nav-btn logout" onclick="logout()">Sair</button>
+      </div>
+    </div>
+
+    <div class="nav" id="nav-menu"></div>
+
+    <div id="area-admin-bloqueio" style="display:none; text-align:center; margin-top:20px;">
+      <p>Somente administradores podem acessar esta página.</p>
+    </div>
+
+    <div id="area-admin-conteudo" style="display:none;">
+      <h2>Criar Funcionário / Admin</h2>
+      <div class="form-container">
+        <form id="form-novo-usuario">
+          <div class="form-group">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+          </div>
+          <div class="form-group">
+            <label for="senha">Senha:</label>
+            <input type="password" id="senha" required minlength="6">
+          </div>
+          <div class="form-group">
+            <label for="tipo">Tipo:</label>
+            <select id="tipo" required>
+              <option value="">Selecione...</option>
+              <option value="2">Funcionário</option>
+              <option value="3">Administrador</option>
+            </select>
+          </div>
+          <button type="submit">Criar Usuário</button>
+        </form>
+      </div>
+
+      <h2>Usuários Cadastrados</h2>
+      <table class="table-usuarios">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Tipo</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="lista-usuarios"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/admin-usuarios.js"></script>
+</body>
+</html>

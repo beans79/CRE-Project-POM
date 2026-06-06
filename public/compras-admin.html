@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compras - Administração</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="inicializarAutenticacao()">
+  <div class="container">
+    <div class="header">
+      <h1>📦 Compras - Administração</h1>
+      <div class="user-info">
+        <span class="user-name" id="nomeUsuario"></span>
+        <button class="nav-btn logout" onclick="logout()">Sair</button>
+      </div>
+    </div>
+
+    <div class="nav" id="nav-menu"></div>
+
+    <h2>Compras Registradas</h2>
+    <div class="books-grid" id="lista-compras-admin"></div>
+  </div>
+  <script src="js/auth.js"></script>
+  <script src="js/compras-admin.js"></script>
+</body>
+</html>

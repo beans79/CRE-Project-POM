@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hands-on Lab: Automação de Testes – Sistema de Biblioteca (CRE)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: white;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            color: #1a73e8;
+            font-size: 32px;
+            margin-bottom: 10px;
+            border-bottom: 3px solid #1a73e8;
+            padding-bottom: 15px;
+        }
+        
+        h2 {
+            color: #1a73e8;
+            font-size: 24px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 4px solid #1a73e8;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #34a853;
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        h4 {
+            color: #666;
+            font-size: 14px;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 12px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        strong {
+            color: #1a73e8;
+        }
+        
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #d32f2f;
+        }
+        
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-left: 4px solid #1a73e8;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        
+        .section {
+            page-break-inside: avoid;
+            margin-bottom: 30px;
+        }
+        
+        .criteria-table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+        
+        .criteria-table th {
+            background: #1a73e8;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .criteria-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+        }
+        
+        .criteria-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+            border-radius: 3px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .test-case {
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            background: #fafafa;
+        }
+        
+        .test-case h4 {
+            color: #1a73e8;
+            margin-top: 0;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #1a73e8;
+        }
+        
+        .header h1 {
+            border: none;
+            padding: 0;
+            margin-bottom: 5px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #34a853;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin: 5px 5px 5px 0;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                padding: 20px;
+            }
+            h1, h2, h3 {
+                page-break-after: avoid;
+            }
+            .test-case {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- HEADER -->
+        <div class="header">
+            <h1>Hands-on Lab: Automação de Testes</h1>
+            <h1>Sistema de Biblioteca (Versão CRE)</h1>
+            <p class="subtitle">Certificação Rumos Expert (CRE): Test Automation Engineer</p>
+            <div>
+                <span class="badge">Automação de API</span>
+                <span class="badge">Automação de UI</span>
+                <span class="badge">Testes de Integração</span>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 1: OBJETIVOS -->
+        <div class="section">
+            <h2>1. Objetivos de Aprendizagem</h2>
+            <p>Ao finalizar o exercício, o candidato deve demonstrar capacidade de:</p>
+            <ul>
+                <li>Automatizar casos de teste de <strong>API</strong> do backend (REST)</li>
+                <li>Automatizar casos de teste de <strong>interface</strong> (frontend web)</li>
+                <li>Validar <strong>regras de negócio</strong>, perfis de usuário (Aluno, Funcionário, Admin) e cenários de erro</li>
+                <li>Estruturar o projeto de automação com <strong>boa arquitetura</strong>, reutilização e legibilidade</li>
+                <li>Produzir <strong>documentação clara</strong> sobre execução e evidências dos testes</li>
+            </ul>
+        </div>
+
+        <!-- SEÇÃO 2: CONTEXTO -->
+        <div class="section">
+            <h2>2. Contexto da Aplicação</h2>
+            <p>O sistema de biblioteca inclui:</p>
+            
+            <h3>2.1 Autenticação</h3>
+            <ul>
+                <li>Registro público (cria sempre <strong>Aluno</strong>)</li>
+                <li>Login de usuários já cadastrados (Aluno, Funcionário, Admin)</li>
+            </ul>
+            
+            <h3>2.2 Perfis e RBAC Simples</h3>
+            <ul>
+                <li><strong>Aluno</strong>: acesso a dashboard, livros, favoritos, arrendamentos, compras e "Minhas Compras"</li>
+                <li><strong>Funcionário</strong>: acesso a dashboard, livros, aprovação de arrendamentos, compras admin</li>
+                <li><strong>Admin</strong>: tudo acima + <strong>Admin Usuários (CRUD)</strong></li>
+            </ul>
+            
+            <h3>2.3 Gerenciamento de Livros (CRUD)</h3>
+            <ul>
+                <li>Criar, listar, atualizar, remover livros</li>
+                <li>Controle de <strong>estoque</strong> e <strong>preço</strong></li>
+                <li>Página de detalhes de cada livro</li>
+            </ul>
+            
+            <h3>2.4 Funcionalidades Principais</h3>
+            <ul>
+                <li><strong>Dashboard Dinâmico</strong>: Estatísticas diferentes por tipo de usuário</li>
+                <li><strong>Favoritos</strong>: Adicionar, remover e listar favoritos</li>
+                <li><strong>Arrendamentos</strong>: Alunos solicitam; Funcionário/Admin aprovam ou rejeitam</li>
+                <li><strong>Compras</strong>: Alunos registram; Funcionário/Admin gerem (aprovar/cancelar)</li>
+                <li><strong>Admin de Usuários</strong>: CRUD completo de usuários</li>
+            </ul>
+            
+            <div class="highlight">
+                <strong>⚙️ Acesso:</strong> Todas as funcionalidades estão disponíveis em <code>http://localhost:3000</code> após <code>npm start</code>
+            </div>
+        </div>
+
+        <!-- SEÇÃO 3: ESCOPO -->
+        <div class="section">
+            <h2>3. Escopo dos Testes a Desenvolver</h2>
+            <p>Os casos de teste detalhados estão separados em <strong>dois documentos complementares</strong>:</p>
+            <ul>
+                <li><strong>Documento 2:</strong> Casos de Teste de <strong>Backend (API)</strong> – 32 casos</li>
+                <li><strong>Documento 3:</strong> Casos de Teste de <strong>Frontend (UI)</strong> – 25 casos</li>
+            </ul>
+            <p>O candidato deve <strong>automatizar todos os casos descritos</strong> ou justificar claramente os que não forem implementados (por limitação de tempo, ferramenta, etc.).</p>
+        </div>
+
+        <!-- SEÇÃO 4: ENTREGÁVEIS -->
+        <div class="section">
+            <h2>4. Entregáveis</h2>
+            <p>O candidato deve entregar:</p>
+            <ol>
+                <li><strong>Código-fonte da automação</strong> (API e UI) em um repositório público no GitHub</li>
+                <li><strong>README de testes</strong> explicando:
+                    <ul style="margin-top: 8px;">
+                        <li>Stack utilizada (linguagem, framework, libs)</li>
+                        <li>Como instalar dependências</li>
+                        <li>Como executar os testes de API e os de UI (comandos)</li>
+                        <li>Como configurar dados de teste (se necessário)</li>
+                    </ul>
+                </li>
+                <li><strong>Relatório de execução</strong>:
+                    <ul style="margin-top: 8px;">
+                        <li>Gerado pela própria ferramenta (HTML report) e referenciado no README</li>
+                        <li>Deve conter evidências de sucesso/falha (logs, screenshots em falhas, etc.)</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <!-- SEÇÃO 5: CRITÉRIOS DE AVALIAÇÃO -->
+        <div class="section">
+            <h2>5. Critérios de Avaliação (100%)</h2>
+            <p>A nota final será calculada pela soma ponderada dos seguintes critérios:</p>
+            
+            <table class="criteria-table">
+                <thead>
+                    <tr>
+                        <th style="width: 70%;">Critério</th>
+                        <th style="width: 15%; text-align: center;">Peso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1. Organização da Estrutura do Projeto
+                            <ul style="margin: 5px 0 0 20px; font-size: 12px;">
+                                <li>Pastas separadas para testes de API e UI</li>
+                                <li>Separação clara entre Page Objects, fixtures e configurações</li>
+                            </ul>
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">10%</td>
+                    </tr>
+                    <tr>
+                        <td>2. Nomenclatura Adequada
+                            <ul style="margin: 5px 0 0 20px; font-size: 12px;">
+                                <li>Nomes claros e consistentes</li>
+                                <li>Idioma único, padrão organizado</li>
+                            </ul>
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">10%</td>
+                    </tr>
+                    <tr>
+                        <td>3. Utilização de Page Objects e Camadas
+                            <ul style="margin: 5px 0 0 20px; font-size: 12px;">
+                                <li>Uso de Page Objects para UI</li>
+                                <li>Separação entre lógica e mapeamento</li>
+                            </ul>
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">12%</td>
+                    </tr>
+                    <tr>
+                        <td>4. Cobertura Funcional dos Casos de Teste
+                            <ul style="margin: 5px 0 0 20px; font-size: 12px;">
+                                <li>Abrangência de cenários (API + UI)</li>
+                                <li>Casos felizes e de erro/validação</li>
+                                <li>Fluxos de cada perfil (Aluno, Funcionário, Admin)</li>
+                            </ul>
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">16%</td>
+                    </tr>
+                    <tr>
+                        <td>5. Uso Adequado de Waits e Sincronização
+                            <ul style="margin: 5px 0 0 20px; font-size: 12px;">
+                                <li>Esperas explícitas (não sleeps fixos)</li>
+                                <li>Testes estáveis, sem flakiness</li>
+                            </ul>
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">10%</td>
+                    </tr>
+                    <tr>
+                        <td>6. Tratamento de Erros e Evidências
+                            <ul style="margin: 5px 0 0 20px; font-size: 12px;">
+                                <li>Manejo de exceções</li>
+                                <li>Logs e screenshots automáticos em falhas</li>
+                            </ul>
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">8%</td>
+                    </tr>
+                    <tr>
+                        <td>7. Manutenção e Reutilização de Código
+                            <ul style="margin: 5px 0 0 20px; font-size: 12px;">
+                                <li>Métodos utilitários para operações repetidas</li>
+                                <li>Evitar duplicação excessiva</li>
+                            </ul>
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">12%</td>
+                    </tr>
+                    <tr>
+                        <td>8. Testes Independentes e Isolados
+                            <ul style="margin: 5px 0 0 20px; font-size: 12px;">
+                                <li>Execução independente sem ordem</li>
+                                <li>Setup/teardown ou dados dinâmicos</li>
+                            </ul>
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">10%</td>
+                    </tr>
+                    <tr>
+                        <td>9. Boas Práticas de Automação e Qualidade
+                            <ul style="margin: 5px 0 0 20px; font-size: 12px;">
+                                <li>Asserts claros com mensagens úteis</li>
+                                <li>Ausência de código morto</li>
+                            </ul>
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">6%</td>
+                    </tr>
+                    <tr>
+                        <td>10. Documentação e README de Testes
+                            <ul style="margin: 5px 0 0 20px; font-size: 12px;">
+                                <li>Instruções completas e testadas</li>
+                                <li>Explicação da arquitetura de testes</li>
+                            </ul>
+                        </td>
+                        <td style="text-align: center; font-weight: bold;">6%</td>
+                    </tr>
+                    <tr style="background: #34a853; color: white; font-weight: bold;">
+                        <td>TOTAL</td>
+                        <td style="text-align: center;">100%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="highlight">
+                <strong>🎓 Para Obter a Certificação CRE:</strong> Atingir <strong>mínimo de 65%</strong> na pontuação final.
+            </div>
+        </div>
+
+        <!-- SEÇÃO 6: RECOMENDAÇÕES -->
+        <div class="section">
+            <h2>6. Recomendações ao Candidato</h2>
+            <ul>
+                <li>Comece pelos <strong>cenários felizes de API</strong> (registro, login, CRUD de livros) e depois amplie para erros e regras de negócio (estoque, perfis, etc.)</li>
+                <li>Automatize primeiro <strong>1 fluxo completo de UI</strong> (ex.: login → dashboard → cadastrar livro → verificar na lista) antes de expandir</li>
+                <li>Reutilize dados de teste e, quando possível, <strong>crie dados via API</strong> antes de executar os testes de UI</li>
+                <li>Rode a suíte localmente várias vezes para garantir <strong>estabilidade antes da submissão</strong></li>
+                <li>Organize o código com <strong>Page Objects</strong> desde o início para facilitar manutenção</li>
+                <li>Implemente <strong>logs detalhados</strong> e <strong>screenshots em falhas</strong> para auxiliar no debug</li>
+            </ul>
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- SEÇÃO 7: ESTRUTURA DOS DOCUMENTOS -->
+        <div class="section">
+            <h2>7. Próximos Documentos</h2>
+            
+            <h3>Documento 2: Casos de Teste – Backend (API)</h3>
+            <p>Contém <strong>32 casos de teste de API</strong> distribuídos em 7 categorias:</p>
+            <ol>
+                <li><strong>Autenticação e Perfis:</strong> 4 casos</li>
+                <li><strong>Livros:</strong> 8 casos</li>
+                <li><strong>Estatísticas:</strong> 1 caso</li>
+                <li><strong>Favoritos:</strong> 4 casos</li>
+                <li><strong>Arrendamentos:</strong> 5 casos</li>
+                <li><strong>Compras:</strong> 6 casos</li>
+                <li><strong>Admin Usuários:</strong> 4 casos</li>
+            </ol>
+            <p>Cada caso inclui: endpoint, objetivo, pré-condições, dados de entrada (JSON), e validações esperadas detalhadas.</p>
+            
+            <h3>Documento 3: Casos de Teste – Frontend (UI)</h3>
+            <p>Contém <strong>25 casos de teste de UI</strong> distribuídos em 9 categorias:</p>
+            <ol>
+                <li><strong>Registro e Login:</strong> 4 casos</li>
+                <li><strong>Proteção de Rotas e Navegação:</strong> 3 casos</li>
+                <li><strong>Dashboard:</strong> 2 casos</li>
+                <li><strong>Livros:</strong> 3 casos</li>
+                <li><strong>Favoritos:</strong> 3 casos</li>
+                <li><strong>Arrendamentos:</strong> 2 casos</li>
+                <li><strong>Compras:</strong> 2 casos</li>
+                <li><strong>Admin Usuários:</strong> 4 casos</li>
+                <li><strong>Logout:</strong> 1 caso</li>
+            </ol>
+            <p>Cada caso inclui: objetivo, pré-condições (quando aplicável), passos detalhados, e validações esperadas.</p>
+        </div>
+
+        <div class="highlight" style="margin-top: 40px;">
+            <strong>📌 Importante:</strong> Este é o documento 1 de 3. Consulte os documentos 2 e 3 para os casos de teste detalhados (API e UI).
+        </div>
+
+    </div>
+</body>
+</html>
