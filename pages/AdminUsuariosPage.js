@@ -9,7 +9,7 @@ class AdminUsuariosPage {
         this.tabelaUsuarios = page.locator('table, #usuarios-lista');
         this.listaLinhasTabela = page.locator('#lista-usuarios tr');
         
-        // Elementos de formulário para criação de usuário
+        // Elementos de formulário para criação do usuário
         this.inputNome = page.locator('#nome');
         this.inputEmail = page.locator('#email');
         this.inputSenha = page.locator('#senha');
@@ -26,7 +26,7 @@ class AdminUsuariosPage {
     }
 
     /**
-     * Automatiza a criação de um novo funcionário associando o value técnico "2" ao tipo de usuário "Funcionário" no dropdown,
+     * Automatiza a criação de um novo funcionário associando o valor técnico "2" ao tipo de usuário "Funcionário" no dropdown,
      *  garantindo a seleção correta mesmo que a ordem dos tipos seja alterada no futuro.
      */
     async criarFuncionario(nome, email, senha) {
