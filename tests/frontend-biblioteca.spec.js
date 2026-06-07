@@ -13,6 +13,7 @@ const { DetalhesPage } = require('../pages/DetalhesPage.js');
 const { FavoritosPage } = require('../pages/FavoritosPage.js');
 const { ArrendamentosPage } = require('../pages/ArrendamentosPage.js');
 const { AdminUsuariosPage } = require('../pages/AdminUsuariosPage.js');
+const { text } = require('node:stream/consumers');
 
 test.describe('Suíte de Testes Frontend (UI) - Sistema de Biblioteca (Padrão POM)', () => {
 
@@ -517,8 +518,11 @@ test.describe('Suíte de Testes Frontend (UI) - Sistema de Biblioteca (Padrão P
             const linhaAlvo = adminUsuariosPage.listaLinhasTabela.last();
 
             const idUsuario = (await linhaAlvo.locator('td').first().innerText()).trim();
+            const nomeUsuario = await linhaAlvo.locator('input[data-campo="nome"]').inputValue();
             const emailUsuario = await linhaAlvo.locator('input[data-campo="email"]').inputValue();
 
+            //imrime o ID e o email excluido.
+            console.log(`Utilizador apagado com sucesso: ${nomeUsuario}, id do usuário excluído: ${idUsuario}, com o email ${emailUsuario}`);
             // Defesa preventiva: se a última linha for o ID master 1, aborta preventivamente para não corromper o ecossistema.
             expect(idUsuario).not.toBe('1');
 
@@ -552,8 +556,9 @@ test.describe('Suíte de Testes Frontend (UI) - Sistema de Biblioteca (Padrão P
             // Garante que o estado de sessão foi completamente purgado a nível físico do browser.
             const localStorageUsuario = await page.evaluate(() => localStorage.getItem('usuario'));
             expect(localStorageUsuario).toBeNull();
+            console.log('Logout realizado com sucesso e sessão limpa.');
 
-            // Re-checagem de segurança: Uma tentativa subsequente de entrar na rota protegida deve falhar e redirecionar.
+            // Verificação de segurança: Uma tentativa subsequente de entrar na rota protegida deve falhar e redirecionar.
             await dashboardPage.navegar();
             await page.waitForURL('**/login.html');
         });
